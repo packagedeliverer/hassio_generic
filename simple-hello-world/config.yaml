@@ -1,0 +1,20 @@
+name: Simple Hello World
+version: "1.0.0"
+slug: simple_hello_world
+description: A simple Hello World addon with ingress support
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+startup: application
+boot: manual
+init: false
+ingress: true
+ingress_port: 8080
+panel_icon: mdi:web
+panel_title: Simple Hello World
+panel_admin: false
+options: {}
+schema: {}
