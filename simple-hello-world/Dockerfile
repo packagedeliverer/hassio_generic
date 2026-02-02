@@ -1,23 +1,29 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Install Python and required packages
+# Install Node.js and npm
 RUN apk add --no-cache \
-    python3 \
-    py3-pip
+    nodejs \
+    npm
 
 # Set working directory
 WORKDIR /app
 
+# Copy package files first for better caching
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
 # Copy application files
 COPY run.sh /
-COPY app.py /app/
+COPY server.js ./
 
 # Make run script executable
 RUN chmod a+x /run.sh
 
 # Expose port
-EXPOSE 8080
+EXPOSE 3000
 
 # Run the application
 CMD ["/run.sh"]

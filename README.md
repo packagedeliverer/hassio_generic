@@ -14,17 +14,9 @@ This repository contains the following add-ons:
 ![Supports armv7 Architecture][armv7-shield]
 ![Supports i386 Architecture][i386-shield]
 
-A simple "Hello World" add-on that demonstrates ingress functionality with Python and a beautiful web interface.
+A "Hello World" add-on that demonstrates ingress functionality using Node.js and Express.js with RESTful API endpoints and a beautiful web interface.
 
-### [Node.js Hello World](./nodejs-hello-world)
-
-![Supports aarch64 Architecture][aarch64-shield]
-![Supports amd64 Architecture][amd64-shield]
-![Supports armhf Architecture][armhf-shield]
-![Supports armv7 Architecture][armv7-shield]
-![Supports i386 Architecture][i386-shield]
-
-A Node.js "Hello World" add-on using Express.js that demonstrates ingress functionality with RESTful API endpoints.
+**Version 2.0.0**: Updated from Python to Node.js with Express framework for better performance and modern JavaScript features.
 
 ## Installation
 

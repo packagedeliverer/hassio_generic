@@ -1,7 +1,7 @@
 name: Simple Hello World
-version: "1.0.1"
+version: "2.0.0"
 slug: simple_hello_world
-description: A simple Hello World addon with ingress support
+description: A Node.js Hello World addon with ingress support (updated from Python)
 arch:
   - armhf
   - armv7
@@ -12,8 +12,8 @@ startup: application
 boot: manual
 init: false
 ingress: true
-ingress_port: 8080
-panel_icon: mdi:web
+ingress_port: 3000
+panel_icon: mdi:nodejs
 panel_title: Simple Hello World
 panel_admin: false
 options: {}

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Starting Simple Hello World Python server..."
+echo "Starting Node.js Hello World addon..."
 
 # Change to app directory
 cd /app
 
-# Start the Python server
-echo "Starting Python HTTP server on port 8080..."
-exec python3 app.py
+# Start the Node.js server
+echo "Starting Express server on port 3000..."
+exec npm start

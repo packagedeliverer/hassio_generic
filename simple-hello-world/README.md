@@ -1,15 +1,16 @@
-# Simple Hello World Addon
+# Node.js Hello World Addon
 
-A simple "Hello World" addon for Home Assistant that demonstrates ingress functionality.
+A Node.js "Hello World" addon for Home Assistant that demonstrates ingress functionality with Express.js.
 
 ## About
 
-This addon serves a basic web page accessible through Home Assistant's ingress system. It's designed as a learning example for developers who want to understand how to create addons with web interfaces that integrate seamlessly with Home Assistant.
+This addon serves a beautiful web page using Node.js and Express.js, accessible through Home Assistant's ingress system. It's designed as a learning example for developers who want to understand how to create Node.js-based addons with web interfaces that integrate seamlessly with Home Assistant.
 
 ## Features
 
+- ✅ **Node.js & Express**: Modern JavaScript runtime with Express framework
 - ✅ **Ingress Support**: Access the web interface directly through Home Assistant
-- ✅ **Lightweight**: Based on Alpine Linux with Nginx
+- ✅ **RESTful API**: Includes example API endpoints (/health, /api/info)
 - ✅ **Multi-Architecture**: Supports ARM and x86 architectures
 - ✅ **No External Ports**: Uses Home Assistant's ingress proxy
 - ✅ **Responsive Design**: Mobile-friendly web interface
@@ -17,7 +18,7 @@ This addon serves a basic web page accessible through Home Assistant's ingress s
 ## Installation
 
 1. Navigate to **Supervisor** → **Add-on Store** in your Home Assistant interface
-2. Find "Simple Hello World" in the **Local add-ons** section
+2. Find "Node.js Hello World" in the **Generic Home Assistant Add-ons** repository
 3. Click **Install**
 
 ## Configuration
@@ -29,7 +30,15 @@ This addon requires no configuration. It works out of the box with default setti
 1. **Install** the addon from the Add-on Store
 2. **Start** the addon
 3. Click **Open Web UI** or access it from the sidebar
-4. You'll see a "Hello World" page with information about the addon
+4. You'll see a "Hello World" page with Node.js branding
+
+## API Endpoints
+
+The addon includes example API endpoints:
+
+- `GET /` - Main Hello World page
+- `GET /health` - Health check endpoint (returns JSON)
+- `GET /api/info` - Addon information endpoint (returns JSON)
 
 ## How It Works
 
@@ -44,10 +53,30 @@ This addon uses Home Assistant's ingress feature, which means:
 
 ### Technical Stack
 
-- **Base Image**: Home Assistant base image (Alpine Linux)
-- **Web Server**: Nginx
-- **Port**: 8080 (internal only)
-- **Files**: Static HTML/CSS/JS served from `/var/www`
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Port**: 3000 (internal only)
+- **Package Manager**: npm
+
+## Development
+
+### Local Testing
+
+You can test the Node.js server locally:
+
+```bash
+cd nodejs-hello-world
+npm install
+npm start
+```
+
+Then visit `http://localhost:3000`
+
+### Customizing
+
+- Edit `server.js` to modify routes and functionality
+- Update `package.json` to add new dependencies
+- Modify the HTML template in the main route for UI changes
 
 ## Support
 
@@ -55,4 +84,4 @@ This is a demonstration addon for educational purposes.
 
 ## License
 
-This addon is provided as-is for educational purposes.
+This addon is provided as-is for educational purposes under the MIT License.
