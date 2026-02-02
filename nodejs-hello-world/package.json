@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-hello-world-addon",
+  "version": "1.0.0",
+  "description": "A Node.js Hello World addon for Home Assistant with ingress support",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": [
+    "home-assistant",
+    "addon",
+    "nodejs",
+    "ingress"
+  ],
+  "author": "packagedeliverer",
+  "license": "MIT"
+}
