@@ -1,5 +1,5 @@
 name: Simple Hello World
-version: "2.0.1"
+version: "2.0.2"
 slug: simple_hello_world
 description: A Node.js Hello World addon with ingress support (updated from Python)
 arch:
@@ -13,7 +13,7 @@ boot: manual
 init: false
 ingress: true
 ingress_port: 3000
-panel_icon: mdi:sap
+panel_icon: mdi:office-building
 panel_title: Simple Hello World
 panel_admin: false
 options: {}
