@@ -4,8 +4,7 @@ FROM $BUILD_FROM
 # Install Python and required packages
 RUN apk add --no-cache \
     python3 \
-    py3-pip \
-    bashio
+    py3-pip
 
 # Set working directory
 WORKDIR /app
