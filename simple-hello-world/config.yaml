@@ -1,7 +1,7 @@
-name: Simple Hello World
-version: "2.0.2"
+name: GUID Converter
+version: "3.0.0"
 slug: simple_hello_world
-description: A Node.js Hello World addon with ingress support (updated from Python)
+description: SAP GUID format converter - Convert between standard and SAP GUID formats
 arch:
   - armhf
   - armv7
@@ -13,8 +13,8 @@ boot: manual
 init: false
 ingress: true
 ingress_port: 3000
-panel_icon: mdi:office-building
-panel_title: Simple Hello World
+panel_icon: mdi:briefcase
+panel_title: GUID Converter
 panel_admin: false
 options: {}
 schema: {}
