@@ -444,8 +444,10 @@ app.get('/', (req, res) => {
         // Load configuration and populate tier dropdown
         async function loadConfiguration() {
             try {
+                console.log('Frontend: Loading configuration from /api/config...');
                 const response = await fetch('/api/config');
                 const config = await response.json();
+                console.log('Frontend: Configuration loaded:', config);
                 
                 const tierSelect = document.getElementById('tier');
                 tierSelect.innerHTML = '';
@@ -455,22 +457,28 @@ app.get('/', (req, res) => {
                 option1.value = config.domains.dev;
                 option1.textContent = 'DEV - ' + config.domains.dev;
                 tierSelect.appendChild(option1);
+                console.log('Frontend: Added DEV option:', config.domains.dev);
                 
                 const option2 = document.createElement('option');
                 option2.value = config.domains.acc;
                 option2.textContent = 'ACC - ' + config.domains.acc;
                 tierSelect.appendChild(option2);
+                console.log('Frontend: Added ACC option:', config.domains.acc);
                 
                 const option3 = document.createElement('option');
                 option3.value = config.domains.prd;
                 option3.textContent = 'PRD - ' + config.domains.prd;
                 tierSelect.appendChild(option3);
+                console.log('Frontend: Added PRD option:', config.domains.prd);
+                
+                console.log('Frontend: Configuration loading complete');
                 
             } catch (error) {
-                console.error('Failed to load configuration:', error);
+                console.error('Frontend: Failed to load configuration:', error);
                 // Fallback to default options
                 const tierSelect = document.getElementById('tier');
                 tierSelect.innerHTML = '<option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option><option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option><option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>';
+                console.log('Frontend: Using fallback default domains');
             }
         }
         
