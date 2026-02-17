@@ -6,19 +6,8 @@ const port = 3000;
 // Serve static files from public directory if it exists
 app.use(express.static('public'));
 
-// Read addon options
+// Default SAP domains (users can modify these in the code if needed)
 function getAddonOptions() {
-  try {
-    const optionsPath = '/data/options.json';
-    if (fs.existsSync(optionsPath)) {
-      const options = JSON.parse(fs.readFileSync(optionsPath, 'utf8'));
-      return options;
-    }
-  } catch (error) {
-    console.log('Could not read addon options, using defaults');
-  }
-  
-  // Default values if options can't be read
   return {
     dev_domain: 'dev-tenant.crm.ondemand.com',
     acc_domain: 'acc-tenant.crm.ondemand.com',
