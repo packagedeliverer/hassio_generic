@@ -1,9 +1,30 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const port = 3000;
 
 // Serve static files from public directory if it exists
 app.use(express.static('public'));
+
+// Read addon options
+function getAddonOptions() {
+  try {
+    const optionsPath = '/data/options.json';
+    if (fs.existsSync(optionsPath)) {
+      const options = JSON.parse(fs.readFileSync(optionsPath, 'utf8'));
+      return options;
+    }
+  } catch (error) {
+    console.log('Could not read addon options, using defaults');
+  }
+  
+  // Default values if options can't be read
+  return {
+    dev_domain: 'dev-tenant.crm.ondemand.com',
+    acc_domain: 'acc-tenant.crm.ondemand.com',
+    prd_domain: 'prd-tenant.crm.ondemand.com'
+  };
+}
 
 // Main route - GUID Converter
 app.get('/', (req, res) => {
@@ -160,9 +181,7 @@ app.get('/', (req, res) => {
             <div class="field-group">
                 <label for="tier">Environment Tier:</label>
                 <select id="tier" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box;">
-                    <option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option>
-                    <option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option>
-                    <option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>
+                    <!-- Options will be populated dynamically -->
                 </select>
             </div>
             
@@ -204,8 +223,8 @@ app.get('/', (req, res) => {
         
         <div class="example">
             <h3>📋 Deep Link Examples:</h3>
-            <p><strong>Account:</strong> <code>https://dev-tenant.crm.ondemand.com/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022241&param.Type=COD_ACCOUNT_TT&sapbyd-agent=TAB</code></p>
-            <p><strong>Contact:</strong> <code>https://dev-tenant.crm.ondemand.com/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022226&param.Type=COD_CONTACT_TT&sapbyd-agent=TAB</code></p>
+            <p><strong>Account:</strong> <code>https://[domain]/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022241&param.Type=COD_ACCOUNT_TT&sapbyd-agent=TAB</code></p>
+            <p><strong>Contact:</strong> <code>https://[domain]/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022226&param.Type=COD_CONTACT_TT&sapbyd-agent=TAB</code></p>
         </div>
         
         <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 30px;">
@@ -387,6 +406,46 @@ app.get('/', (req, res) => {
                 generateDeepLink();
             }
         });
+        
+        // Load configuration and populate tier dropdown
+        async function loadConfiguration() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                const tierSelect = document.getElementById('tier');
+                tierSelect.innerHTML = '';
+                
+                // Add options from configuration
+                const option1 = document.createElement('option');
+                option1.value = config.domains.dev;
+                option1.textContent = `DEV - ${config.domains.dev}`;
+                tierSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = config.domains.acc;
+                option2.textContent = `ACC - ${config.domains.acc}`;
+                tierSelect.appendChild(option2);
+                
+                const option3 = document.createElement('option');
+                option3.value = config.domains.prd;
+                option3.textContent = `PRD - ${config.domains.prd}`;
+                tierSelect.appendChild(option3);
+                
+            } catch (error) {
+                console.error('Failed to load configuration:', error);
+                // Fallback to default options
+                const tierSelect = document.getElementById('tier');
+                tierSelect.innerHTML = `
+                    <option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option>
+                    <option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option>
+                    <option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>
+                `;
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', loadConfiguration);
     </script>
 </body>
 </html>
@@ -412,6 +471,18 @@ app.get('/api/info', (req, res) => {
     runtime: 'Node.js',
     framework: 'Express.js',
     timestamp: new Date().toISOString()
+  });
+});
+
+// Configuration endpoint for frontend
+app.get('/api/config', (req, res) => {
+  const options = getAddonOptions();
+  res.json({
+    domains: {
+      dev: options.dev_domain,
+      acc: options.acc_domain,
+      prd: options.prd_domain
+    }
   });
 });
 
