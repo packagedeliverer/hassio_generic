@@ -227,7 +227,7 @@ app.get('/', (req, res) => {
         </div>
         
         <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 30px;">
-            Last updated: ${currentTime}
+            Last updated: ' + currentTime + '
         </div>
     </div>
 
