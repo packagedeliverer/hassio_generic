@@ -1,5 +1,5 @@
 name: SAP Tools
-version: "4.2.0"
+version: "4.3.0"
 slug: simple_hello_world
 description: SAP GUID converter and deep link generator for ByD objects
 arch:
@@ -16,6 +16,14 @@ ingress_port: 3000
 panel_icon: mdi:briefcase
 panel_title: SAP Tools
 panel_admin: false
+options:
+  dev_domain: dev-tenant.crm.ondemand.com
+  acc_domain: acc-tenant.crm.ondemand.com
+  prd_domain: prd-tenant.crm.ondemand.com
+schema:
+  dev_domain: str
+  acc_domain: str
+  prd_domain: str
 build_from:
   aarch64: "ghcr.io/home-assistant/aarch64-base:3.19"
   amd64: "ghcr.io/home-assistant/amd64-base:3.19"
