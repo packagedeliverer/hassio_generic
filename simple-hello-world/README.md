@@ -1,87 +1,114 @@
-# Node.js Hello World Addon
+# SAP Tools Addon
 
-A Node.js "Hello World" addon for Home Assistant that demonstrates ingress functionality with Express.js.
+A comprehensive SAP tools addon for Home Assistant that provides GUID conversion and deep link generation for SAP ByD objects.
 
 ## About
 
-This addon serves a beautiful web page using Node.js and Express.js, accessible through Home Assistant's ingress system. It's designed as a learning example for developers who want to understand how to create Node.js-based addons with web interfaces that integrate seamlessly with Home Assistant.
+This addon provides essential SAP development and administration tools through a web interface accessible via Home Assistant's ingress system. It's designed for SAP administrators, developers, and consultants who need quick access to GUID conversion and deep link generation for SAP Business ByDesign (ByD) objects.
 
 ## Features
 
-- ✅ **Node.js & Express**: Modern JavaScript runtime with Express framework
+- ✅ **GUID Converter**: Convert between standard GUID format (lowercase with dashes) and SAP format (uppercase without dashes)
+- ✅ **SAP Deep Link Generator**: Generate direct links to SAP ByD objects
+- ✅ **10 Object Types Supported**: Accounts, Contacts, Tickets, Opportunities, Sales Orders, Products, Appointments, Tasks, Sales Quotes, Leads
+- ✅ **Configurable Environments**: Set your own SAP tenant domains through Home Assistant UI
+- ✅ **Real-time Generation**: Links update automatically as you type
 - ✅ **Ingress Support**: Access the web interface directly through Home Assistant
-- ✅ **RESTful API**: Includes example API endpoints (/health, /api/info)
 - ✅ **Multi-Architecture**: Supports ARM and x86 architectures
-- ✅ **No External Ports**: Uses Home Assistant's ingress proxy
 - ✅ **Responsive Design**: Mobile-friendly web interface
 
 ## Installation
 
 1. Navigate to **Supervisor** → **Add-on Store** in your Home Assistant interface
-2. Find "Node.js Hello World" in the **Generic Home Assistant Add-ons** repository
-3. Click **Install**
+2. Add the repository: `https://github.com/packagedeliverer/hassio_generic.git`
+3. Find "SAP Tools" in the **Generic Home Assistant Add-ons** repository
+4. Click **Install**
 
 ## Configuration
 
-This addon requires no configuration. It works out of the box with default settings.
+Configure your SAP tenant domains in the addon configuration:
+
+```yaml
+dev_domain: "your-dev-tenant.crm.ondemand.com"
+acc_domain: "your-acc-tenant.crm.ondemand.com"
+prd_domain: "your-prd-tenant.crm.ondemand.com"
+```
+
+### Configuration Options
+
+- **dev_domain**: Development environment domain
+- **acc_domain**: Acceptance environment domain  
+- **prd_domain**: Production environment domain
 
 ## Usage
 
 1. **Install** the addon from the Add-on Store
-2. **Start** the addon
-3. Click **Open Web UI** or access it from the sidebar
-4. You'll see a "Hello World" page with Node.js branding
+2. **Configure** your SAP tenant domains
+3. **Start** the addon
+4. Click **Open Web UI** or access it from the sidebar
+
+### GUID Converter
+
+- Enter a standard GUID format (lowercase with dashes)
+- Automatically converts to SAP format (uppercase without dashes)
+- Works bidirectionally - enter either format
+- Generate new random GUIDs with the click of a button
+
+### Deep Link Generator
+
+- Select your target environment (DEV/ACC/PRD)
+- Choose the SAP object type (Account, Contact, Ticket, etc.)
+- Enter the Internal ID of the object
+- Get a direct link to open the object in SAP ByD
+- Copy the link to clipboard with one click
+
+## Supported SAP Object Types
+
+- **COD_ACCOUNT_TT**: Customer/Vendor Accounts
+- **COD_CONTACT_TT**: Business Contacts
+- **COD_SRQ_AGENT_TT**: Service Requests/Tickets/Cases
+- **COD_OPPORTUNITY_THINGTYPE**: Sales Opportunities
+- **COD_SALESORDER_TT**: Sales Orders
+- **COD_MATERIAL**: Products/Materials
+- **COD_APPOINTMENT**: Calendar Appointments
+- **COD_TASK**: Tasks
+- **COD_QUOTE_TT**: Sales Quotes
+- **COD_MKT_PROSPECT**: Marketing Leads
 
 ## API Endpoints
 
-The addon includes example API endpoints:
+The addon includes API endpoints:
 
-- `GET /` - Main Hello World page
-- `GET /health` - Health check endpoint (returns JSON)
-- `GET /api/info` - Addon information endpoint (returns JSON)
+- `GET /` - Main SAP Tools interface
+- `GET /health` - Health check endpoint
+- `GET /api/info` - Addon information
+- `GET /api/config` - Current domain configuration
 
-## How It Works
+## Technical Details
 
 ### Ingress Integration
 
-This addon uses Home Assistant's ingress feature, which means:
-
-- The web interface is accessible at `/api/hassio_ingress/<token>/`
-- No external ports are exposed
-- Authentication is handled by Home Assistant
-- The interface appears integrated within the HA web UI
+- Web interface accessible through Home Assistant ingress
+- No external ports exposed
+- Authentication handled by Home Assistant
+- Integrated within the HA web UI
 
 ### Technical Stack
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
+- **Runtime**: Node.js with Express.js
 - **Port**: 3000 (internal only)
-- **Package Manager**: npm
+- **Configuration**: Dynamic loading from Home Assistant options
 
-## Development
+## Security
 
-### Local Testing
-
-You can test the Node.js server locally:
-
-```bash
-cd nodejs-hello-world
-npm install
-npm start
-```
-
-Then visit `http://localhost:3000`
-
-### Customizing
-
-- Edit `server.js` to modify routes and functionality
-- Update `package.json` to add new dependencies
-- Modify the HTML template in the main route for UI changes
+- No sensitive data is hardcoded in the repository
+- SAP tenant domains are configurable through Home Assistant UI
+- All sensitive hostnames have been removed from git history
 
 ## Support
 
-This is a demonstration addon for educational purposes.
+This addon is designed for SAP professionals working with Business ByDesign environments.
 
 ## License
 
-This addon is provided as-is for educational purposes under the MIT License.
+This addon is provided under the MIT License.
