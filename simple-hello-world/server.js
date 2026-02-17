@@ -10,15 +10,32 @@ app.use(express.static('public'));
 function getAddonOptions() {
   try {
     const optionsPath = '/data/options.json';
+    console.log('Checking for options file at:', optionsPath);
+    
     if (fs.existsSync(optionsPath)) {
-      const options = JSON.parse(fs.readFileSync(optionsPath, 'utf8'));
-      return options;
+      console.log('Options file exists, reading...');
+      const optionsContent = fs.readFileSync(optionsPath, 'utf8');
+      console.log('Raw options content:', optionsContent);
+      
+      const options = JSON.parse(optionsContent);
+      console.log('Parsed options:', options);
+      
+      // Validate that we have the required domains
+      if (options.dev_domain && options.acc_domain && options.prd_domain) {
+        console.log('Using configured domains from options');
+        return options;
+      } else {
+        console.log('Options missing required domains, using defaults');
+      }
+    } else {
+      console.log('Options file does not exist at', optionsPath);
     }
   } catch (error) {
-    console.log('Could not read addon options, using defaults');
+    console.log('Error reading addon options:', error.message);
   }
   
   // Default values if options can't be read
+  console.log('Using default domains');
   return {
     dev_domain: 'dev-tenant.crm.ondemand.com',
     acc_domain: 'acc-tenant.crm.ondemand.com',
