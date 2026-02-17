@@ -8,34 +8,52 @@ app.use(express.static('public'));
 
 // Read addon options from Home Assistant
 function getAddonOptions() {
-  try {
-    const optionsPath = '/data/options.json';
-    console.log('Checking for options file at:', optionsPath);
-    
-    if (fs.existsSync(optionsPath)) {
-      console.log('Options file exists, reading...');
-      const optionsContent = fs.readFileSync(optionsPath, 'utf8');
-      console.log('Raw options content:', optionsContent);
+  const possiblePaths = [
+    '/data/options.json',
+    '/config/options.json',
+    './options.json',
+    '/share/options.json'
+  ];
+  
+  for (const optionsPath of possiblePaths) {
+    try {
+      console.log('Checking for options file at:', optionsPath);
       
-      const options = JSON.parse(optionsContent);
-      console.log('Parsed options:', options);
-      
-      // Validate that we have the required domains
-      if (options.dev_domain && options.acc_domain && options.prd_domain) {
-        console.log('Using configured domains from options');
-        return options;
+      if (fs.existsSync(optionsPath)) {
+        console.log('Options file exists, reading...');
+        const optionsContent = fs.readFileSync(optionsPath, 'utf8');
+        console.log('Raw options content:', optionsContent);
+        
+        const options = JSON.parse(optionsContent);
+        console.log('Parsed options:', options);
+        
+        // Validate that we have the required domains
+        if (options.dev_domain && options.acc_domain && options.prd_domain) {
+          console.log('Using configured domains from options at:', optionsPath);
+          return options;
+        } else {
+          console.log('Options missing required domains at:', optionsPath);
+        }
       } else {
-        console.log('Options missing required domains, using defaults');
+        console.log('Options file does not exist at:', optionsPath);
       }
-    } else {
-      console.log('Options file does not exist at', optionsPath);
+    } catch (error) {
+      console.log('Error reading addon options from', optionsPath, ':', error.message);
     }
-  } catch (error) {
-    console.log('Error reading addon options:', error.message);
+  }
+  
+  // Also check environment variables as fallback
+  if (process.env.DEV_DOMAIN && process.env.ACC_DOMAIN && process.env.PRD_DOMAIN) {
+    console.log('Using domains from environment variables');
+    return {
+      dev_domain: process.env.DEV_DOMAIN,
+      acc_domain: process.env.ACC_DOMAIN,
+      prd_domain: process.env.PRD_DOMAIN
+    };
   }
   
   // Default values if options can't be read
-  console.log('Using default domains');
+  console.log('Using default domains - no configuration found');
   return {
     dev_domain: 'dev-tenant.crm.ondemand.com',
     acc_domain: 'acc-tenant.crm.ondemand.com',
