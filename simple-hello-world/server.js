@@ -30,8 +30,7 @@ function getAddonOptions() {
 app.get('/', (req, res) => {
   const currentTime = new Date().toLocaleString();
   
-  const html = `
-<!DOCTYPE html>
+  res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -337,7 +336,7 @@ app.get('/', (req, res) => {
             }
             
             // Construct the deep link URL
-            const baseUrl = `https://${tier}/sap/public/byd/runtime`;
+            const baseUrl = 'https://' + tier + '/sap/public/byd/runtime';
             const params = new URLSearchParams({
                 'bo_ns': 'http://sap.com/thingTypes',
                 'bo': 'COD_GENERIC',
@@ -348,7 +347,7 @@ app.get('/', (req, res) => {
                 'sapbyd-agent': 'TAB'
             });
             
-            const deepLink = `${baseUrl}?${params.toString()}`;
+            const deepLink = baseUrl + '?' + params.toString();
             document.getElementById('generatedLink').value = deepLink;
             
             document.getElementById('linkSuccess').textContent = 'Deep link generated successfully!';
@@ -419,28 +418,24 @@ app.get('/', (req, res) => {
                 // Add options from configuration
                 const option1 = document.createElement('option');
                 option1.value = config.domains.dev;
-                option1.textContent = `DEV - ${config.domains.dev}`;
+                option1.textContent = 'DEV - ' + config.domains.dev;
                 tierSelect.appendChild(option1);
                 
                 const option2 = document.createElement('option');
                 option2.value = config.domains.acc;
-                option2.textContent = `ACC - ${config.domains.acc}`;
+                option2.textContent = 'ACC - ' + config.domains.acc;
                 tierSelect.appendChild(option2);
                 
                 const option3 = document.createElement('option');
                 option3.value = config.domains.prd;
-                option3.textContent = `PRD - ${config.domains.prd}`;
+                option3.textContent = 'PRD - ' + config.domains.prd;
                 tierSelect.appendChild(option3);
                 
             } catch (error) {
                 console.error('Failed to load configuration:', error);
                 // Fallback to default options
                 const tierSelect = document.getElementById('tier');
-                tierSelect.innerHTML = `
-                    <option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option>
-                    <option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option>
-                    <option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>
-                `;
+                tierSelect.innerHTML = '<option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option><option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option><option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>';
             }
         }
         
@@ -448,10 +443,7 @@ app.get('/', (req, res) => {
         document.addEventListener('DOMContentLoaded', loadConfiguration);
     </script>
 </body>
-</html>
-  `;
-  
-  res.send(html);
+</html>`);
 });
 
 // Health check endpoint
@@ -487,6 +479,6 @@ app.get('/api/config', (req, res) => {
 });
 
 app.listen(port, '0.0.0.0', () => {
-  console.log(`Node.js Hello World server listening on port ${port}`);
-  console.log(`Server started at ${new Date().toISOString()}`);
+  console.log('Node.js Hello World server listening on port ' + port);
+  console.log('Server started at ' + new Date().toISOString());
 });
