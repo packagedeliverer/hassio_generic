@@ -516,4 +516,10 @@ app.get('/api/config', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log('Node.js Hello World server listening on port ' + port);
   console.log('Server started at ' + new Date().toISOString());
+  
+  // Load and display configuration at startup
+  console.log('=== CONFIGURATION LOADING ===');
+  const startupOptions = getAddonOptions();
+  console.log('Final configuration loaded:', startupOptions);
+  console.log('=== CONFIGURATION COMPLETE ===');
 });
