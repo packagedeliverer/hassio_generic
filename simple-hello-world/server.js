@@ -444,8 +444,8 @@ app.get('/', (req, res) => {
         // Load configuration and populate tier dropdown
         async function loadConfiguration() {
             try {
-                console.log('Frontend: Loading configuration from /api/config...');
-                const response = await fetch('/api/config');
+                console.log('Frontend: Loading configuration from ./api/config...');
+                const response = await fetch('./api/config');
                 const config = await response.json();
                 console.log('Frontend: Configuration loaded:', config);
                 
