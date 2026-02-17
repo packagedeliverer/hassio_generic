@@ -1,7 +1,7 @@
-name: GUID Converter
-version: "3.0.0"
+name: SAP Tools
+version: "4.0.0"
 slug: simple_hello_world
-description: SAP GUID format converter - Convert between standard and SAP GUID formats
+description: SAP GUID converter and deep link generator for ByD objects
 arch:
   - armhf
   - armv7
@@ -14,7 +14,7 @@ init: false
 ingress: true
 ingress_port: 3000
 panel_icon: mdi:briefcase
-panel_title: GUID Converter
+panel_title: SAP Tools
 panel_admin: false
 options: {}
 schema: {}

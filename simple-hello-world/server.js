@@ -151,6 +151,62 @@ app.get('/', (req, res) => {
             <p><strong>Standard:</strong> <code>a1b2c3d4-e5f6-7890-abcd-ef1234567890</code></p>
             <p><strong>SAP:</strong> <code>A1B2C3D4E5F67890ABCDEF1234567890</code></p>
         </div>
+
+        <!-- SAP Deep Link Generator -->
+        <h1 style="margin-top: 50px;">🔗 SAP Deep Link Generator</h1>
+        <p class="subtitle">Generate direct links to SAP ByD objects</p>
+        
+        <div class="converter-section">
+            <div class="field-group">
+                <label for="tier">Environment Tier:</label>
+                <select id="tier" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box;">
+                    <option value="dev-tenant.crm.ondemand.com">DEV - dev-tenant.crm.ondemand.com</option>
+                    <option value="acc-tenant.crm.ondemand.com">ACC - acc-tenant.crm.ondemand.com</option>
+                    <option value="prd-tenant.crm.ondemand.com">PRD - prd-tenant.crm.ondemand.com</option>
+                </select>
+            </div>
+            
+            <div class="field-group">
+                <label for="objectType">Object Type:</label>
+                <select id="objectType" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box;">
+                    <option value="COD_ACCOUNT_TT">Accounts (COD_ACCOUNT_TT)</option>
+                    <option value="COD_CONTACT_TT">Contact (COD_CONTACT_TT)</option>
+                    <option value="COD_SRQ_AGENT_TT">Tickets/Cases/Service Requests (COD_SRQ_AGENT_TT)</option>
+                    <option value="COD_OPPORTUNITY_THINGTYPE">Opportunities (COD_OPPORTUNITY_THINGTYPE)</option>
+                    <option value="COD_SALESORDER_TT">Sales Orders (COD_SALESORDER_TT)</option>
+                    <option value="COD_MATERIAL">Products (COD_MATERIAL)</option>
+                    <option value="COD_APPOINTMENT">Appointments (COD_APPOINTMENT)</option>
+                    <option value="COD_TASK">Tasks (COD_TASK)</option>
+                    <option value="COD_QUOTE_TT">Sales Quotes (COD_QUOTE_TT)</option>
+                    <option value="COD_MKT_PROSPECT">Leads (COD_MKT_PROSPECT)</option>
+                </select>
+            </div>
+            
+            <div class="field-group">
+                <label for="internalId">Internal ID:</label>
+                <input type="text" id="internalId" placeholder="e.g., 1022241, 3561, GRONOS_WIND_ONSHORE">
+                <div class="format-info">Enter the Internal ID of the object you want to link to</div>
+                <div id="linkError" class="error" style="display: none;"></div>
+            </div>
+            
+            <div class="buttons">
+                <button onclick="generateDeepLink()">🔗 Generate Deep Link</button>
+                <button onclick="copyDeepLink()">📋 Copy Link</button>
+                <button onclick="clearLinkFields()">🗑️ Clear</button>
+            </div>
+            
+            <div class="field-group">
+                <label for="generatedLink">Generated Deep Link:</label>
+                <textarea id="generatedLink" readonly style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 0.9em; font-family: 'Courier New', monospace; box-sizing: border-box; min-height: 80px; resize: vertical;"></textarea>
+                <div id="linkSuccess" class="success" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>📋 Deep Link Examples:</h3>
+            <p><strong>Account:</strong> <code>https://dev-tenant.crm.ondemand.com/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022241&param.Type=COD_ACCOUNT_TT&sapbyd-agent=TAB</code></p>
+            <p><strong>Contact:</strong> <code>https://dev-tenant.crm.ondemand.com/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022226&param.Type=COD_CONTACT_TT&sapbyd-agent=TAB</code></p>
+        </div>
         
         <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 30px;">
             Last updated: ${currentTime}
@@ -246,6 +302,91 @@ app.get('/', (req, res) => {
             hideError('standardError');
             hideError('sapError');
         }
+        
+        // Deep Link Generator Functions
+        function generateDeepLink() {
+            const tier = document.getElementById('tier').value;
+            const objectType = document.getElementById('objectType').value;
+            const internalId = document.getElementById('internalId').value.trim();
+            
+            hideError('linkError');
+            document.getElementById('linkSuccess').style.display = 'none';
+            
+            if (!internalId) {
+                showError('linkError', 'Please enter an Internal ID');
+                return;
+            }
+            
+            // Construct the deep link URL
+            const baseUrl = `https://${tier}/sap/public/byd/runtime`;
+            const params = new URLSearchParams({
+                'bo_ns': 'http://sap.com/thingTypes',
+                'bo': 'COD_GENERIC',
+                'node': 'Root',
+                'operation': 'OnExtInspect',
+                'param.InternalID': internalId,
+                'param.Type': objectType,
+                'sapbyd-agent': 'TAB'
+            });
+            
+            const deepLink = `${baseUrl}?${params.toString()}`;
+            document.getElementById('generatedLink').value = deepLink;
+            
+            document.getElementById('linkSuccess').textContent = 'Deep link generated successfully!';
+            document.getElementById('linkSuccess').style.display = 'block';
+        }
+        
+        function copyDeepLink() {
+            const linkField = document.getElementById('generatedLink');
+            if (!linkField.value) {
+                showError('linkError', 'Please generate a deep link first');
+                return;
+            }
+            
+            linkField.select();
+            linkField.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                document.execCommand('copy');
+                document.getElementById('linkSuccess').textContent = 'Deep link copied to clipboard!';
+                document.getElementById('linkSuccess').style.display = 'block';
+                hideError('linkError');
+            } catch (err) {
+                showError('linkError', 'Failed to copy to clipboard');
+            }
+        }
+        
+        function clearLinkFields() {
+            document.getElementById('internalId').value = '';
+            document.getElementById('generatedLink').value = '';
+            document.getElementById('tier').selectedIndex = 0;
+            document.getElementById('objectType').selectedIndex = 0;
+            hideError('linkError');
+            document.getElementById('linkSuccess').style.display = 'none';
+        }
+        
+        // Auto-generate link when Internal ID changes
+        document.getElementById('internalId').addEventListener('input', function() {
+            if (this.value.trim()) {
+                generateDeepLink();
+            } else {
+                document.getElementById('generatedLink').value = '';
+                document.getElementById('linkSuccess').style.display = 'none';
+            }
+        });
+        
+        // Auto-generate link when tier or object type changes
+        document.getElementById('tier').addEventListener('change', function() {
+            if (document.getElementById('internalId').value.trim()) {
+                generateDeepLink();
+            }
+        });
+        
+        document.getElementById('objectType').addEventListener('change', function() {
+            if (document.getElementById('internalId').value.trim()) {
+                generateDeepLink();
+            }
+        });
     </script>
 </body>
 </html>
