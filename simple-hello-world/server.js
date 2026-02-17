@@ -201,11 +201,6 @@ app.get('/', (req, res) => {
             </div>
         </div>
         
-        <div class="example">
-            <h3>📋 Examples:</h3>
-            <p><strong>Standard:</strong> <code>a1b2c3d4-e5f6-7890-abcd-ef1234567890</code></p>
-            <p><strong>SAP:</strong> <code>A1B2C3D4E5F67890ABCDEF1234567890</code></p>
-        </div>
 
         <!-- SAP Deep Link Generator -->
         <h1 style="margin-top: 50px;">🔗 SAP Deep Link Generator</h1>
@@ -255,11 +250,6 @@ app.get('/', (req, res) => {
             </div>
         </div>
         
-        <div class="example">
-            <h3>📋 Deep Link Examples:</h3>
-            <p><strong>Account:</strong> <code>https://[domain]/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022241&param.Type=COD_ACCOUNT_TT&sapbyd-agent=TAB</code></p>
-            <p><strong>Contact:</strong> <code>https://[domain]/sap/public/byd/runtime?bo_ns=http://sap.com/thingTypes&bo=COD_GENERIC&node=Root&operation=OnExtInspect&param.InternalID=1022226&param.Type=COD_CONTACT_TT&sapbyd-agent=TAB</code></p>
-        </div>
         
         <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 30px;">
             Last updated: ' + currentTime + '
