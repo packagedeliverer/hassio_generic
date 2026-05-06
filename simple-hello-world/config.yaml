@@ -27,10 +27,8 @@ options:
   c4cv2_acc_domain: acc-tenant.de1.test.crm.cloud.sap
   c4cv2_prd_domain: prd-tenant.de1.crm.cloud.sap
   crm_roles:
-    - id: ROLE_ID_1
-      label: Role 1
-    - id: ROLE_ID_2
-      label: Role 2
+    - "ROLE_ID_1:Role Label 1"
+    - "ROLE_ID_2:Role Label 2"
 schema:
   dev_domain: str
   acc_domain: str
@@ -42,8 +40,7 @@ schema:
   c4cv2_acc_domain: str
   c4cv2_prd_domain: str
   crm_roles:
-    - id: str
-      label: str
+    - str
 build_from:
   aarch64: "ghcr.io/home-assistant/aarch64-base:3.19"
   amd64: "ghcr.io/home-assistant/amd64-base:3.19"

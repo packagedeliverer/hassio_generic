@@ -828,7 +828,11 @@ app.get('/api/config', (req, res) => {
         prd: options.c4cv2_prd_domain || 'prd-tenant.de1.crm.cloud.sap'
       }
     },
-    crm_roles: options.crm_roles || []
+    crm_roles: (options.crm_roles || []).map(function(r) {
+      var idx = r.indexOf(':');
+      if (idx === -1) return { id: r, label: r };
+      return { id: r.slice(0, idx), label: r.slice(idx + 1) };
+    })
   });
 });
 
