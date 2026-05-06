@@ -1,7 +1,7 @@
 name: SAP Tools
-version: "4.3.5"
+version: "4.4.0"
 slug: simple_hello_world
-description: SAP GUID converter and deep link generator for ByD objects
+description: SAP GUID converter and deep link generator for ByD, CRM and C4C v2 objects
 arch:
   - aarch64
   - amd64
@@ -20,10 +20,30 @@ options:
   dev_domain: dev-tenant.crm.ondemand.com
   acc_domain: acc-tenant.crm.ondemand.com
   prd_domain: prd-tenant.crm.ondemand.com
+  crm_dev_domain: crm-dev.example.com:8443
+  crm_acc_domain: crm-acc.example.com:8443
+  crm_prd_domain: crm-prd.example.com:8443
+  c4cv2_dev_domain: dev-tenant.de1.test.crm.cloud.sap
+  c4cv2_acc_domain: acc-tenant.de1.test.crm.cloud.sap
+  c4cv2_prd_domain: prd-tenant.de1.crm.cloud.sap
+  crm_roles:
+    - id: ROLE_ID_1
+      label: Role 1
+    - id: ROLE_ID_2
+      label: Role 2
 schema:
   dev_domain: str
   acc_domain: str
   prd_domain: str
+  crm_dev_domain: str
+  crm_acc_domain: str
+  crm_prd_domain: str
+  c4cv2_dev_domain: str
+  c4cv2_acc_domain: str
+  c4cv2_prd_domain: str
+  crm_roles:
+    - id: str
+      label: str
 build_from:
   aarch64: "ghcr.io/home-assistant/aarch64-base:3.19"
   amd64: "ghcr.io/home-assistant/amd64-base:3.19"
